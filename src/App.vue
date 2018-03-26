@@ -12,4 +12,5 @@ export default {
 <style>
 *{margin: 0 0; padding: 0 0;}
 ul li {list-style: none;}
+.clearfix:after {content: ''; clear: both; display: block; height: 0;}
 </style>

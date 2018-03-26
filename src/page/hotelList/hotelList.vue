@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mainContainer">
     <header class="h_header">
       <div class="head_inp">
         <i class="inp_icon"></i>
@@ -11,17 +11,112 @@
     <div class="header_fixed_holder"></div>
     <nav class="h_filt">
       <ul>
-        <li>星级</li>
+        <li @click="changePRView">星级</li>
         <li>品牌</li>
         <li>位置</li>
         <li>排序</li>
       </ul>
     </nav>
-    <section class="h_list"></section>
+    <div class="nav_fixed_holder"></div>
+    <section class="h_list">
+      <div class="div_list">
+        <ul class="ul_list">
+          <li><img src="../../assets/image/nopic.png" alt=""></li>
+          <li>
+            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
+            <p class="hotel_des">酒店区域</p>
+            <p class="hotel_distance">距您xxx公里</p>
+            <p class="hotel_pic_icon">惠 返</p>
+            <p class="hotel_txt_icon">优惠文字优惠文字</p>
+            <div class="hotel_price"><span class="font_orange">￥180</span>起</div>
+          </li>
+        </ul>
+        <ul class="ul_list">
+          <li><img src="../../assets/image/nopic.png" alt=""></li>
+          <li>
+            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
+            <p class="hotel_des">酒店区域</p>
+            <p class="hotel_distance">距您xxx公里</p>
+            <p class="hotel_pic_icon">惠 返</p>
+            <p class="hotel_txt_icon">优惠文字优惠文字</p>
+          </li>
+        </ul>
+        <ul class="ul_list">
+          <li><img src="../../assets/image/nopic.png" alt=""></li>
+          <li>
+            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
+            <p class="hotel_des">酒店区域</p>
+            <p class="hotel_distance">距您xxx公里</p>
+            <p class="hotel_pic_icon">惠 返</p>
+            <p class="hotel_txt_icon">优惠文字优惠文字</p>
+          </li>
+        </ul>
+        <ul class="ul_list">
+          <li><img src="../../assets/image/nopic.png" alt=""></li>
+          <li>
+            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
+            <p class="hotel_des">酒店区域</p>
+            <p class="hotel_distance">距您xxx公里</p>
+            <p class="hotel_pic_icon">惠 返</p>
+            <p class="hotel_txt_icon">优惠文字优惠文字</p>
+          </li>
+        </ul>
+        <ul class="ul_list">
+          <li><img src="../../assets/image/nopic.png" alt=""></li>
+          <li>
+            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
+            <p class="hotel_des">酒店区域</p>
+            <p class="hotel_distance">距您xxx公里</p>
+            <p class="hotel_pic_icon">惠 返</p>
+            <p class="hotel_txt_icon">优惠文字优惠文字</p>
+          </li>
+        </ul>
+        <ul class="ul_list">
+          <li><img src="../../assets/image/nopic.png" alt=""></li>
+          <li>
+            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
+            <p class="hotel_des">酒店区域</p>
+            <p class="hotel_distance">距您xxx公里</p>
+            <p class="hotel_pic_icon">惠 返</p>
+            <p class="hotel_txt_icon">优惠文字优惠文字</p>
+            <div></div>
+          </li>
+        </ul>
+        <ul class="ul_list">
+          <li><img src="../../assets/image/nopic.png" alt=""></li>
+          <li>
+            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
+            <p class="hotel_des">酒店区域</p>
+            <p class="hotel_distance">距您xxx公里</p>
+            <p class="hotel_pic_icon">惠 返</p>
+            <p class="hotel_txt_icon">优惠文字优惠文字</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <price-and-rank v-show="prFlag" :prFlag='prFlag'></price-and-rank>
   </div>
 </template>
-
+<script>
+import priceAndRank from '../../components/filt/priceAndRank'
+export default {
+  data () {
+    return {
+      prFlag: false // 价格品牌筛选标记
+    }
+  },
+  methods: {
+    changePRView () {
+      this.prFlag = !this.prFlag
+    }
+  },
+  components: {priceAndRank}
+}
+</script>
 <style>
+.mainContainer{
+  height: 100%;
+}
 .h_header {
   /* display: table; */
   position: fixed;
@@ -34,6 +129,8 @@
   min-width: 320px;
   padding: 0 55px;
   border-bottom: 1px solid #e5e5e5;
+  z-index: 98;
+  background: #fff;
 }
 .h_back {
   display: block;
@@ -140,6 +237,7 @@
   left: 0;
   background: #fff;
   border-bottom: solid 1px #e6e6e6;
+  z-index: 2;
 }
 .h_filt ul {
   display: -webkit-box;
@@ -157,9 +255,72 @@
 .h_list {
   width: 100%;
   height: aoto;
-  background: #a35151;
+  background: #fff;
 }
 .header_fixed_holder {
   height: 45px;
+}
+.nav_fixed_holder {
+  height: 55px;
+}
+.div_list {
+  width: 97%;
+  padding-left: 10px;
+  background: #fff;
+}
+.ul_list {
+  display: table;
+  width: 100%;
+  border-bottom: 1px solid #e5e5e5;
+}
+.ul_list li {
+  display: table-cell;
+  vertical-align: middle;
+}
+.ul_list li:nth-of-type(1){
+  padding-top: 5px;
+  padding-left: 3px;
+  width: 96px;
+}
+.ul_list li:nth-of-type(2){
+  position: relative;
+}
+.ul_list li p {
+  font-size: 12px;
+  margin-left: 8px;
+  margin-top: 3px;
+  color:#808080;
+}
+.hotel_name {
+  font-size: 13px !important;
+  color: #000000 !important;
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.hotel_des {
+  width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.hotel_distance {
+  width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.hotel_txt_icon {
+  width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.hotel_price {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  text-align: right;
 }
 </style>
