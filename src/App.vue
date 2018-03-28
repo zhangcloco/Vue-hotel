@@ -10,7 +10,5 @@ export default {
 </script>
 
 <style>
-*{margin: 0 0; padding: 0 0;}
-ul li {list-style: none;}
-.clearfix:after {content: ''; clear: both; display: block; height: 0;}
+  @import url('./assets/style/common.css');
 </style>

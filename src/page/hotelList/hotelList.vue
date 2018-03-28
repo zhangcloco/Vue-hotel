@@ -6,7 +6,12 @@
         <input type="text" placeholder="关键词">
         <i class="inp_close"></i>
       </div>
-      <i class="h_back"></i>
+      <div class="date_div">
+          <p>入<span class="font_orange">{{getArrivalDate(arrivalDate)}}</span></p>
+          <p>离<span class="font_orange">{{getDepartureDate(departureDate)}}</span></p>
+      </div>
+      <span class="header_hotel_map"><img src="../../assets/image/header_hotel_map.png"></span>
+      <i @click="toBack" class="h_back"></i>
     </header>
     <div class="header_fixed_holder"></div>
     <nav class="h_filt">
@@ -20,94 +25,75 @@
     <div class="nav_fixed_holder"></div>
     <section class="h_list">
       <div class="div_list">
-        <ul class="ul_list">
-          <li><img src="../../assets/image/nopic.png" alt=""></li>
+        <ul v-for="h in hotelList"class="ul_list">
+          <li><img :src='getHotelPic(h)' alt=""></li>
           <li>
-            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
-            <p class="hotel_des">酒店区域</p>
+            <p class="hotel_name">{{h.hotelName}}</p>
+            <p class="hotel_des">{{h.esdName}}</p>
             <p class="hotel_distance">距您xxx公里</p>
             <p class="hotel_pic_icon">惠 返</p>
             <p class="hotel_txt_icon">优惠文字优惠文字</p>
-            <div class="hotel_price"><span class="font_orange">￥180</span>起</div>
-          </li>
-        </ul>
-        <ul class="ul_list">
-          <li><img src="../../assets/image/nopic.png" alt=""></li>
-          <li>
-            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
-            <p class="hotel_des">酒店区域</p>
-            <p class="hotel_distance">距您xxx公里</p>
-            <p class="hotel_pic_icon">惠 返</p>
-            <p class="hotel_txt_icon">优惠文字优惠文字</p>
-          </li>
-        </ul>
-        <ul class="ul_list">
-          <li><img src="../../assets/image/nopic.png" alt=""></li>
-          <li>
-            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
-            <p class="hotel_des">酒店区域</p>
-            <p class="hotel_distance">距您xxx公里</p>
-            <p class="hotel_pic_icon">惠 返</p>
-            <p class="hotel_txt_icon">优惠文字优惠文字</p>
-          </li>
-        </ul>
-        <ul class="ul_list">
-          <li><img src="../../assets/image/nopic.png" alt=""></li>
-          <li>
-            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
-            <p class="hotel_des">酒店区域</p>
-            <p class="hotel_distance">距您xxx公里</p>
-            <p class="hotel_pic_icon">惠 返</p>
-            <p class="hotel_txt_icon">优惠文字优惠文字</p>
-          </li>
-        </ul>
-        <ul class="ul_list">
-          <li><img src="../../assets/image/nopic.png" alt=""></li>
-          <li>
-            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
-            <p class="hotel_des">酒店区域</p>
-            <p class="hotel_distance">距您xxx公里</p>
-            <p class="hotel_pic_icon">惠 返</p>
-            <p class="hotel_txt_icon">优惠文字优惠文字</p>
-          </li>
-        </ul>
-        <ul class="ul_list">
-          <li><img src="../../assets/image/nopic.png" alt=""></li>
-          <li>
-            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
-            <p class="hotel_des">酒店区域</p>
-            <p class="hotel_distance">距您xxx公里</p>
-            <p class="hotel_pic_icon">惠 返</p>
-            <p class="hotel_txt_icon">优惠文字优惠文字</p>
-            <div></div>
-          </li>
-        </ul>
-        <ul class="ul_list">
-          <li><img src="../../assets/image/nopic.png" alt=""></li>
-          <li>
-            <p class="hotel_name">酒店名字酒店名字酒店名字酒店名字酒店名字</p>
-            <p class="hotel_des">酒店区域</p>
-            <p class="hotel_distance">距您xxx公里</p>
-            <p class="hotel_pic_icon">惠 返</p>
-            <p class="hotel_txt_icon">优惠文字优惠文字</p>
+            <div class="hotel_price"><span class="font_orange">￥<em class="font18">{{h.minPrice}}</em></span>起</div>
           </li>
         </ul>
       </div>
     </section>
+    <div class="swipe_more">
+      <p>{{msg}}</p>
+    </div>
     <price-and-rank v-show="prFlag" :prFlag='prFlag'></price-and-rank>
   </div>
 </template>
 <script>
 import priceAndRank from '../../components/filt/priceAndRank'
+import {getHotelList} from '../../service/hotelList/hotelListReq'
 export default {
   data () {
     return {
-      prFlag: false // 价格品牌筛选标记
+      prFlag: false, // 价格品牌筛选标记
+      arrivalDate: '',
+      departureDate: '',
+      cityId: '',
+      hotelList: [],
+      curPage: '1',
+      msg: '上滑加载显示更多'
     }
   },
+  created () {
+    this.arrivalDate = this.$route.query.arrivalDate
+    this.departureDate = this.$route.query.departureDate
+    this.cityId = this.$route.query.cityId
+  },
+  mounted () {
+    this.getHotelList('1')
+  },
   methods: {
+    async getHotelList (page) {
+      let params = {}
+      params.pageIndex = page
+      params.cityId = this.cityId
+      params.arrivalDate = this.arrivalDate
+      params.departureDate = this.departureDate
+      let resObj = await getHotelList(params)
+      console.log(resObj)
+      let detail = resObj.detail ? resObj.detail : {}
+      this.hotelList = detail.hotelList ? detail.hotelList : []
+      this.curPage = page
+    },
     changePRView () {
       this.prFlag = !this.prFlag
+    },
+    toBack () {
+      this.$router.go(-1)
+    },
+    getArrivalDate (arrDate) {
+      return arrDate.split('-')[1] + '-' + arrDate.split('-')[2]
+    },
+    getDepartureDate (depaDate) {
+      return depaDate.split('-')[1] + '-' + depaDate.split('-')[2]
+    },
+    getHotelPic (obj) {
+      return (obj.imageUrl == null || obj.imgUrl == "") ? '../../assets/image/nopic.png' : obj.imageUrl
     }
   },
   components: {priceAndRank}
@@ -154,8 +140,8 @@ export default {
 
 }
 .inp_icon {
-  left: 10px;
-  top: 5px;
+  left: 60px;
+  top: 4px;
   position: absolute;
   display: block;
   width: 24px;
@@ -218,8 +204,29 @@ export default {
   top: 7px;
   border-radius: 3px;
   /* background: #cccccc; */
-  padding: 2px 26px 8px 30px;
-
+  padding: 2px 26px 8px 80px;
+}
+.date_div {
+  position: absolute;
+  top: 9px;
+  width: 55px;
+  height: 26px;
+  border-right: 1px solid #e5e5e5;
+}
+.date_div p {
+  margin-left: 2px;
+  padding:1px;
+  line-height: 12px;
+  font-size: 6px;
+}
+.header_hotel_map {
+  position: absolute;
+  height: 45px;
+  top: 8px;
+  right: 16px;
+}
+.header_hotel_map img {
+  height: 50%;
 }
 .head_inp input {
   border: none;
@@ -319,8 +326,20 @@ export default {
 }
 .hotel_price {
   position: absolute;
-  right: 0;
+  right: 10px;
   bottom: 10px;
   text-align: right;
+}
+.swipe_more {
+  height: 38px;
+  background: #fff;
+  border-top: 1px solid #ccc;
+  text-align: center;
+
+}
+.swipe_more p {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #999
 }
 </style>

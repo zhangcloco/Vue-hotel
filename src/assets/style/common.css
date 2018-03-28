@@ -1,0 +1,7 @@
+*{margin: 0 0; padding: 0 0;}
+ul li {list-style: none;}
+em {font-style: normal; font-weight: 500;}
+.clearfix:after {content: ''; clear: both; display: block; height: 0;}
+.font_orange {color: #ff7600;}
+.font18 {font-size: 18px;}
+.font22 {font-size: 22px;}
